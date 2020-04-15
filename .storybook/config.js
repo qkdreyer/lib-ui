@@ -24,3 +24,5 @@ addDecorator(storyFn => <ThemeProvider theme={muiRg6Theme}>{storyFn()}</ThemePro
 addDecorator(storyFn => <MuiPickersUtilsProvider utils={util} locale={fr}>{storyFn()}</MuiPickersUtilsProvider>)
 // automatically import all files ending in *.stories.jsx
 configure(require.context('../src', true, /\.stories\.jsx$/), module)
+
+module.hot && !module.hot._main && module.hot.addStatusHandler(status => !window.disableClearConsole && status === 'prepare' && console.clear())
