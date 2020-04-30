@@ -12,10 +12,6 @@ export const colors = {
   success:    '#5cb85c',
 }
 
-export const shadows = {
-  m: '0 4px 16px rgba(0,0,0,.175)',
-}
-
 export const borders = {
   default: `1px solid ${colors.lightgray}`,
 }

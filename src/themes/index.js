@@ -1,3 +1,4 @@
+import { createMuiTheme } from '@material-ui/core/styles'
 import * as rg6Theme from './rg6-theme'
 import * as darkTheme from './dark-theme'
 
@@ -65,12 +66,31 @@ const base = {
     monospace: 'monospace',
   },
   lineHeights,
-  shadows: {
-    m: '0 4px 16px rgba(0,0,0,.175)',
-  },
   iconSizes,
 }
 
-export default base
-export const rg6 = { ...base, ...rg6Theme }
-export const dark = { ...base, ...darkTheme }
+const theme = {
+  ...base,
+  palette: {
+    primary:   { main: '#009cb4' },
+    secondary: { main: '#f5f5f5' },
+    success:   { main: '#5CB85C', contrastText: 'white' },
+    info:      { main: '#337AB7' },
+    warning:   { main: '#F0AD4E' },
+    error:     { main: '#D9534F' },
+  },
+  typography: {
+    fontFamily: base.fonts.body,
+    fontSizes:  base.fontSizes,
+    monospace:  base.fonts.monospace,
+  },
+}
+
+// https://github.com/styled-system/styled-system/issues/651#issuecomment-517842805
+theme.breakpoints = {
+  map: (cb) => (base.breakpoints || ['40em', '52em', '64em']).map(cb)
+}
+
+export default theme
+export const rg6 = createMuiTheme({ ...theme, ...rg6Theme })
+export const dark = createMuiTheme({ ...theme, ...darkTheme })
