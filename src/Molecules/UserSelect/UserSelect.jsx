@@ -13,32 +13,12 @@ import UserProvider from './UserProvider'
 
 const autocompleteStyles = makeStyles(theme => createStyles({
   inputRoot: {
-    border:                              '0 !important', // FIXME: refacto input instead
-    borderBottomLeftRadius:              '0 !important', // FIXME: refacto input instead
-    borderBottomRightRadius:             '0 !important', // FIXME: refacto input instead
-    height:                              'auto !important', // FIXME: refacto input instead
-    minHeight:                           50,
-    '&[class*="MuiOutlinedInput-root"]': {
-      paddingTop:                                     6,
-      paddingBottom:                                  6,
-      paddingLeft:                                    9,
-      '& [class*="MuiOutlinedInput-notchedOutline"]': {
-        borderColor: 'lightgrey',
-        borderWidth: 1,
-      },
-      '&:hover': {
-        '& [class*="MuiOutlinedInput-notchedOutline"]': {
-          borderColor: 'lightgrey',
-        },
-      },
-      '&[class*="Mui-focused"] [class*="MuiOutlinedInput-notchedOutline"]': {
-        borderColor: '#66afe9',
-      },
-      '&[class*="Mui-focused"]:hover [class*="MuiOutlinedInput-notchedOutline"]': {
-        borderColor: '#66afe9',
-      },
-    },
-    '& input': {
+    border:                  '0 !important', // FIXME: refacto input instead
+    borderBottomLeftRadius:  '0 !important', // FIXME: refacto input instead
+    borderBottomRightRadius: '0 !important', // FIXME: refacto input instead
+    height:                  'auto !important', // FIXME: refacto input instead
+    minHeight:               50,
+    '& input':               {
       minWidth: '75px !important', // FIXME: https://github.com/mui-org/material-ui/blob/master/packages/material-ui-lab/src/Autocomplete/Autocomplete.js#L447-L453
     },
   },
@@ -76,6 +56,27 @@ const formControlStyles = makeStyles({
   },
 })
 
+const textFieldInputStyles = makeStyles({
+  root: {
+    paddingTop:                6,
+    paddingBottom:             6,
+    paddingLeft:               9,
+    '&:hover $notchedOutline': {
+      borderColor: 'lightgrey',
+    },
+    '&$focused $notchedOutline': {
+      borderColor: '#66afe9',
+    },
+    '&$focused:hover $notchedOutline': {
+      borderColor: '#66afe9',
+    },
+  },
+  notchedOutline: {
+    borderColor: 'lightgrey',
+    borderWidth: 1,
+  },
+})
+
 const UserSelect = ({
   children,
   id = '',
@@ -90,6 +91,7 @@ const UserSelect = ({
   const t = useTranslation()
   const autocompleteClasses = autocompleteStyles()
   const formControlClasses = formControlStyles()
+  const textFieldInputClasses = textFieldInputStyles()
 
   const labelId = `users-${id}`
   const options = Children.toArray(children).map(child => child.props)
@@ -107,7 +109,14 @@ const UserSelect = ({
           onClose={() => setOpen(false)}
           options={options}
           id={labelId}
-          renderInput={params => <TextField variant="outlined" placeholder={!values || values.length === 0 ? placeholder : ''} {...params} />}
+          renderInput={params => <TextField
+            variant="outlined"
+            placeholder={!values || values.length === 0 ? placeholder : ''}
+            InputProps={{
+              classes: textFieldInputClasses,
+            }}
+            {...params}
+          />}
           renderTags={values => <UserChips values={values} onChange={onChange} />}
           renderOption={props => <User {...props} />}
           getOptionLabel={option => (typeof option === 'object' ? option : options.find(({ value }) => value === option) || {}).children || ''}
